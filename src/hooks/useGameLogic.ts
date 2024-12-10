@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 
+import { getBestMove } from "../utils/ai";
 import { Player, Board, GameState } from "../types/global";
 
 /**
@@ -133,7 +134,7 @@ export const useGameLogic = () => {
       !state.isGameOver
     ) {
       const timer = setTimeout(() => {
-        // TODO: AI move logic goes here
+        const aiMove = getBestMove(state.board, state.difficulty);
         makeMove(aiMove);
       }, 1000);
 
