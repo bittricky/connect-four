@@ -21,7 +21,7 @@ const Board: FC<BoardProps> = ({
           row.map((cell, colIndex) => (
             <Cell
               key={`${rowIndex}-${colIndex}`}
-              value={cell}
+              cell={cell}
               onClick={() => onColumnClick(colIndex)}
               onMouseEnter={() => setHoverColumn(colIndex)}
               onMouseLeave={() => setHoverColumn(null)}
