@@ -15,7 +15,7 @@ function App() {
             onClick={() => setIsMenuOpen(true)}
             className="bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-700 transition-colors"
           >
-            {/* TODO:Menu Component */}
+            <Menu className="w-6 h-6" />
           </button>
           <div className="flex gap-2">
             <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -27,7 +27,7 @@ function App() {
             onClick={() => {}}
             className="bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-700 transition-colors"
           >
-            {/* TODO: Restart Game Component */}
+            <RefreshCw className="w-6 h-6" />
           </button>
         </div>
 
