@@ -10,3 +10,9 @@ export interface GameState {
   scores: Record<Player, number>;
   timeLeft: number;
 }
+
+export interface ScoreCardProps {
+  player: 1 | 2;
+  score: number;
+  isCurrentPlayer: boolean;
+}
