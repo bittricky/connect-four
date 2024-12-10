@@ -1,4 +1,7 @@
 /**
+ * Disclaimer:
+ * I did not write this algorithm by hand, it was generated based on the prompted specification using claude.ai
+ * 
  * This file contains the logic for the Connect Four AI.
  *
  * The AI uses the Minimax algorithm to determine the best move. The algorithm
