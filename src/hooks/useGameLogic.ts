@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+
 import { Player, Board, GameState } from "../types/global";
 
 /**
@@ -22,6 +23,8 @@ const INITIAL_STATE: GameState = {
     2: 0,
   },
   timeLeft: TURN_TIME,
+  mode: null,
+  difficulty: "medium",
 };
 
 /**
@@ -122,6 +125,37 @@ export const useGameLogic = () => {
     [checkWin, state]
   );
 
+  // AI move effect
+  useEffect(() => {
+    if (
+      state.mode === "cpu" &&
+      state.currentPlayer === 2 &&
+      !state.isGameOver
+    ) {
+      const timer = setTimeout(() => {
+        // TODO: AI move logic goes here
+        makeMove(aiMove);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [
+    state.currentPlayer,
+    state.mode,
+    state.isGameOver,
+    state.board,
+    state.difficulty,
+    makeMove,
+  ]);
+
+  const startGame = useCallback((mode: Mode, difficulty?: Difficulty) => {
+    setState({
+      ...INITIAL_STATE,
+      mode: mode,
+      difficulty: difficulty || "medium",
+    });
+  }, []);
+
   const resetGame = useCallback(() => {
     setState((prev) => ({
       ...prev,
@@ -134,7 +168,8 @@ export const useGameLogic = () => {
   }, []);
 
   useEffect(() => {
-    if (state.isGameOver) return;
+    if (state.isGameOver || (state.mode === "cpu" && state.currentPlayer === 2))
+      return;
 
     const timer = setInterval(() => {
       setState((prev) => {
@@ -153,11 +188,12 @@ export const useGameLogic = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [state.isGameOver]);
+  }, [state.isGameOver, state.mode, state.currentPlayer]);
 
   return {
     state,
     makeMove,
     resetGame,
+    startGame,
   };
 };
