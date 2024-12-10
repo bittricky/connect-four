@@ -3,7 +3,7 @@ import { Menu, RefreshCw } from "lucide-react";
 
 import { useGameLogic } from "./hooks/useGameLogic";
 
-import { ScoreCard } from "./components";
+import { ScoreCard, Board } from "./components";
 function App() {
   const { state, makeMove, resetGame } = useGameLogic();
   const { hoverColumn, setHoverColumn } = useState<number | null>(null);
@@ -40,7 +40,13 @@ function App() {
             isCurrentPlayer={state.currentPlayer === 1}
           />
 
-          {/* TODO: Board Component */}
+          <Board
+            board={state.board}
+            currentPlayer={state.currentPlayer}
+            onColumnClick={makeMove}
+            hoverColumn={hoverColumn}
+            setHoverColumn={setHoverColumn}
+          />
 
           <ScoreCard
             player={2}
