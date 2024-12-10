@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { Menu, RefreshCw } from "lucide-react";
+
+import { useGameLogic } from "./hooks/useGameLogic";
 function App() {
+  const { state, makeMove, resetGame } = useGameLogic();
+  const { hoverColumn, setHoverColumn } = useGameLogic();
+  const { isMenuOpen, setIsMenuOpen } = useGameLogic();
+
   return (
     <div className="min-h-screen bg-purple-500 p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <button
-            onClick={() => {}}
+            onClick={() => setIsMenuOpen(true)}
             className="bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-700 transition-colors"
           >
             {/* TODO:Menu Component */}
@@ -33,7 +39,24 @@ function App() {
           {/* TODO: Score Card Component */}
         </div>
 
-        {/* TODO: Display Game and Timer */}
+        {state.winner ? (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+            <div className="bg-white p-8 rounded-lg text-center">
+              <h2 className="text-2xl font-bold mb-4">
+                Player {state.winner} Wins!
+              </h2>
+              <button
+                onClick={resetGame}
+                className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                Play Again
+              </button>
+            </div>
+          </div>
+        ) : (
+          // TODO: Game Timer Component
+          <div>Clock is Ticking</div>
+        )}
 
         {/* TODO: Game Component */}
       </div>

@@ -1,6 +1,11 @@
 import { useState, useCallback, useEffect } from "react";
 import { Player, Board, GameState } from "../types/global";
 
+/**
+ * Creates an initial game board. The board is a 6x7 grid with each cell initially
+ * set to null. This function is used to create the initial state of the game.
+ * @returns {Board} The initial game board.
+ */
 const createInitialBoard = () =>
   Array(6)
     .fill(null)
@@ -19,6 +24,15 @@ const INITIAL_STATE: GameState = {
   timeLeft: TURN_TIME,
 };
 
+/**
+ * Hook that handles the game state and logic for Connect Four.
+ *
+ * @returns An object with the following properties:
+ * - state: The current game state.
+ * - makeMove: A function that makes a move in the game. It takes the column number
+ *   as an argument.
+ * - resetGame: A function that resets the game state to the initial state.
+ */
 export const useGameLogic = () => {
   const [state, setState] = useState<GameState>(INITIAL_STATE);
   const checkWin = useCallback(
