@@ -24,3 +24,12 @@ export interface BoardProps {
   hoverColumn: number | null;
   setHoverColumn: (column: number | null) => void;
 }
+
+export interface CellProps {
+  cell: CellType;
+  onClick: () => void;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+  isHovered: boolean;
+  currentPlayer: Player;
+}
