@@ -34,7 +34,7 @@ export interface CellProps {
   currentPlayer: Player;
 }
 
-export type TimerProps {
+export interface TimerProps {
   timeLeft: number;
   currentPlayer: Player;
 }
