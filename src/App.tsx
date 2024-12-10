@@ -3,7 +3,7 @@ import { Menu, RefreshCw } from "lucide-react";
 
 import { useGameLogic } from "./hooks/useGameLogic";
 
-import { ScoreCard, Board } from "./components";
+import { ScoreCard, Board, Timer } from "./components";
 function App() {
   const { state, makeMove, resetGame } = useGameLogic();
   const [hoverColumn, setHoverColumn] = useState<number | null>(null);
@@ -26,7 +26,7 @@ function App() {
             <div className="w-3 h-3 rounded-full bg-yellow-500" />
           </div>
           <button
-            onClick={() => {}}
+            onClick={resetGame}
             className="bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-700 transition-colors"
           >
             <RefreshCw className="w-6 h-6" />
@@ -70,8 +70,10 @@ function App() {
             </div>
           </div>
         ) : (
-          // TODO: Game Timer Component
-          <div>Clock is Ticking</div>
+          <Timer
+            timeLeft={state.timeLeft}
+            currentPlayer={state.currentPlayer}
+          />
         )}
 
         {/* TODO: Game Component */}
