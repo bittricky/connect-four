@@ -4,9 +4,11 @@ import { SmilePlus, Bot, Book } from "lucide-react";
 import { useNavigate } from "react-router";
 
 import { HomeProps, Difficulty } from "../types/global";
+import { Menu } from "./";
 
-const Home: FC<HomeProps> = ({ onStartGame, onShowRules }) => {
+const Home: FC<HomeProps> = ({ onStartGame }) => {
   const [showDifficulty, setShowDifficulty] = useState<boolean>(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>();
   const navigate = useNavigate();
 
@@ -136,7 +138,7 @@ const Home: FC<HomeProps> = ({ onStartGame, onShowRules }) => {
           whileTap="tap"
           transition={{ type: "spring", delay: 0.2 }}
           className="w-full bg-white text-purple-600 p-4 rounded-xl shadow-lg flex items-center justify-center gap-3 font-semibold"
-          onClick={onShowRules}
+          onClick={() => setIsMenuOpen(true)}
         >
           <Book className="w-6 h-6" />
           Game Rules
@@ -156,6 +158,12 @@ const Home: FC<HomeProps> = ({ onStartGame, onShowRules }) => {
             Start Game
           </motion.button>
         )}
+        <Menu
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+          onResetGame={() => {}}
+          mode={null}
+        />
       </div>
     </div>
   );

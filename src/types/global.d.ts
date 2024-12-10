@@ -46,12 +46,12 @@ export interface TimerProps {
 export interface MenuProps {
   isOpen: boolean;
   onClose: () => void;
-  onResetGame: () => void;
+  onResetGame?: () => void;
+  mode: Mode;
 }
 
 export interface HomeProps {
   onStartGame: (mode: Mode, difficulty?: Difficulty) => void;
-  onShowRules: () => VideoDecoder;
 }
 
 export interface Settings {

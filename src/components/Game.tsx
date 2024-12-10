@@ -94,6 +94,7 @@ const Game: FC = () => {
           isOpen={isMenuOpen}
           onClose={() => setIsMenuOpen(false)}
           onResetGame={resetGame}
+          mode={state.mode}
         />
       </div>
     </div>

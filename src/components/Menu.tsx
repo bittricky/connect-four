@@ -6,7 +6,12 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { MenuProps } from "../types/global";
 
-const Menu: FC<MenuProps> = ({ isOpen, onClose, onResetGame }) => {
+const Menu: FC<MenuProps> = ({
+  isOpen,
+  onClose,
+  onResetGame = () => {},
+  mode,
+}) => {
   const navigate = useNavigate();
 
   return (
@@ -51,21 +56,25 @@ const Menu: FC<MenuProps> = ({ isOpen, onClose, onResetGame }) => {
                 </p>
               </div>
 
-              <button
-                onClick={() => {
-                  onResetGame();
-                  onClose();
-                }}
-                className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors mt-8"
-              >
-                New Game
-              </button>
-              <button
-                onClick={() => navigate("/")}
-                className="w-full bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                Main Menu
-              </button>
+              {mode !== null && (
+                <div className="space-y-4 mt-8">
+                  <button
+                    onClick={() => {
+                      onResetGame();
+                      onClose();
+                    }}
+                    className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors mt-8"
+                  >
+                    New Game
+                  </button>
+                  <button
+                    onClick={() => navigate("/")}
+                    className="w-full bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors"
+                  >
+                    Main Menu
+                  </button>
+                </div>
+              )}
             </div>
           </motion.div>
         </>

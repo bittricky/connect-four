@@ -1,16 +1,11 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-} from "react-router"; // Import necessary routing components
+import { BrowserRouter as Router, Routes, Route } from "react-router"; // Import necessary routing components
 
+import { Mode, Difficulty } from "./types/global";
 import { useGameLogic } from "./hooks/useGameLogic";
 import { Game, Home, NotFound } from "./components";
 
 const App = () => {
   const { startGame } = useGameLogic();
-  // TODO Add state and menu management to hook or here
 
   return (
     <Router>
@@ -22,7 +17,6 @@ const App = () => {
               onStartGame={(mode: Mode, difficulty?: Difficulty) => {
                 startGame(mode, difficulty);
               }}
-              onShowRules={() => console.log("Show rules")}
             />
           }
         />
