@@ -15,10 +15,10 @@ const NotFound: FC = () => {
       >
         <AlertCircle className="w-24 h-24 mx-auto mb-4" />
         <div className="flex gap-2 justify-center mb-4">
-          <div className="w-3 h-3 rounded-full bg-pink-500" />
-          <div className="w-3 h-3 rounded-full bg-yellow-400" />
-          <div className="w-3 h-3 rounded-full bg-pink-500" />
-          <div className="w-3 h-3 rounded-full bg-yellow-400" />
+          <div className="w-3 h-3 rounded-full bg-red-500" />
+          <div className="w-3 h-3 rounded-full bg-yellow-500" />
+          <div className="w-3 h-3 rounded-full bg-red-500" />
+          <div className="w-3 h-3 rounded-full bg-yellow-500" />
         </div>
       </motion.div>
 
