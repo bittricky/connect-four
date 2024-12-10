@@ -114,3 +114,7 @@ The game features smooth animations for:
 - Hover effects
 - Menu transitions
 - Victory celebrations
+
+### Credits
+
+scaffolded with [Vite](https://vite.dev/guide/)
