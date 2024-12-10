@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Menu, RefreshCw } from "lucide-react";
 
 import { useGameLogic } from "./hooks/useGameLogic";
 function App() {
   const { state, makeMove, resetGame } = useGameLogic();
-  const { hoverColumn, setHoverColumn } = useGameLogic();
-  const { isMenuOpen, setIsMenuOpen } = useGameLogic();
+  const { hoverColumn, setHoverColumn } = useState<number | null>(null);
+  const { isMenuOpen, setIsMenuOpen } = useState<boolean>(false);
 
   return (
     <div className="min-h-screen bg-purple-500 p-4 md:p-8">
