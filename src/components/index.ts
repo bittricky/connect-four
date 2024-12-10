@@ -4,3 +4,4 @@ export { default as Timer } from "./Timer";
 export { default as Menu } from "./Menu";
 export { default as Home } from "./Home";
 export { default as Game } from "./Game";
+export { default as NotFound } from "./NotFound";

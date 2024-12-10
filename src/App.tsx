@@ -1,7 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router"; // Import necessary routing components
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router"; // Import necessary routing components
 
 import { useGameLogic } from "./hooks/useGameLogic";
-import { Game, Home } from "./components";
+import { Game, Home, NotFound } from "./components";
 
 const App = () => {
   const { startGame } = useGameLogic();
@@ -22,6 +27,7 @@ const App = () => {
           }
         />
         <Route path="/Game" element={<Game />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
