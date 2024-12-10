@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Menu, RefreshCw } from "lucide-react";
+import { Menu as MenuIcon, RefreshCw } from "lucide-react";
 
 import { useGameLogic } from "./hooks/useGameLogic";
 
-import { ScoreCard, Board, Timer } from "./components";
+import { ScoreCard, Board, Timer, Menu } from "./components";
 function App() {
   const { state, makeMove, resetGame } = useGameLogic();
   const [hoverColumn, setHoverColumn] = useState<number | null>(null);
@@ -17,7 +17,7 @@ function App() {
             onClick={() => setIsMenuOpen(true)}
             className="bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-700 transition-colors"
           >
-            <Menu className="w-6 h-6" />
+            <MenuIcon className="w-6 h-6" />
           </button>
           <div className="flex gap-2">
             <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -76,7 +76,11 @@ function App() {
           />
         )}
 
-        {/* TODO: Game Component */}
+        <Menu
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+          onResetGame={resetGame}
+        />
       </div>
     </div>
   );
