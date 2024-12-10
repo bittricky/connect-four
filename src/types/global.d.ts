@@ -1,8 +1,8 @@
 export type Player = 1 | 2;
 export type Cell = Player | null;
 export type Board = Cell[][];
-export type Mode = 'cpu' | 'player' | null;
-export type Difficulty = 'easy' | 'medium' | 'hard';
+export type Mode = "cpu" | "player" | null;
+export type Difficulty = "easy" | "medium" | "hard";
 
 export interface GameState {
   board: Board;
@@ -11,6 +11,8 @@ export interface GameState {
   isGameOver: boolean;
   scores: Record<Player, number>;
   timeLeft: number;
+  mode: Mode;
+  difficulty: Difficulty;
 }
 
 export interface ScoreCardProps {
@@ -48,6 +50,11 @@ export interface MenuProps {
 }
 
 export interface HomeProps {
-  onStartGame: (mode: ModuleNamespace, difficulty: Difficulty) => void;;
+  onStartGame: (mode: Mode, difficulty?: Difficulty) => void;
   onShowRules: () => VideoDecoder;
+}
+
+export interface Settings {
+  mode: Mode;
+  difficulty: Difficulty;
 }
