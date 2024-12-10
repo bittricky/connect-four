@@ -1,6 +1,6 @@
 /**
  * Disclaimer:
- * I did not write this algorithm by hand, it was generated based on the prompted specification using claude.ai
+ * I did not write this algorithm by hand, it was generated based on prompted specifications using claude.ai
  * 
  * This file contains the logic for the Connect Four AI.
  *
