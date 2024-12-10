@@ -33,3 +33,8 @@ export interface CellProps {
   isHovered: boolean;
   currentPlayer: Player;
 }
+
+export type TimerProps {
+  timeLeft: number;
+  currentPlayer: Player;
+}
