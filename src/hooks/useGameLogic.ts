@@ -35,40 +35,47 @@ const INITIAL_STATE: GameState = {
  */
 export const useGameLogic = () => {
   const [state, setState] = useState<GameState>(INITIAL_STATE);
-  const checkWin = useCallback(
-    (board: Board, row: number, col: number, player: Player) => {
-      const checkDirection = (dr: number, dc: number) => {
-        for (let r = 0; r < 6; r++) {
-          for (let c = 0; c < 4; c++) {
-            /*
-                (dr, dc) represents the direction: 
-                (0,1) horizontal, 
-                (1,0) vertical, 
-                (1,1) diagonal, 
-                (-1,1) anti-diagonal
-            */
-            if (
-              board[(r + 0 * dr) % 6][(c + 0 * dc) % 7] === player &&
-              board[(r + 1 * dr) % 6][(c + 1 * dc) % 7] === player &&
-              board[(r + 2 * dr) % 6][(c + 2 * dc) % 7] === player &&
-              board[(r + 3 * dr) % 6][(c + 3 * dc) % 7] === player
-            ) {
-              return true;
+
+  const checkWin = useCallback((board: Board, player: Player) => {
+    /**
+     * Checks if there are four cells in a row in the given direction.
+     *
+     * @param {number} rowOffset The row offset.
+     * @param {number} colOffset The column offset.
+     * @returns {boolean} If there are four cells in a row in the given direction.
+     */
+    const checkDirection = (rowOffset: number, colOffset: number) => {
+      for (let startRow = 0; startRow < 6; startRow++) {
+        for (let startCol = 0; startCol < 7; startCol++) {
+          const fourCells = [];
+          for (let i = 0; i < 4; i++) {
+            const row = startRow + i * rowOffset;
+            const col = startCol + i * colOffset;
+            if (row < 0 || row >= 6 || col < 0 || col >= 7) {
+              // Out of bounds, skip this direction
+              fourCells.length = 0;
+              break;
             }
+            fourCells.push(board[row][col]);
+          }
+          if (
+            fourCells.length === 4 &&
+            fourCells.every((cell) => cell === player)
+          ) {
+            return true;
           }
         }
-        return false;
-      };
+      }
+      return false;
+    };
 
-      return (
-        checkDirection(0, 1) ||
-        checkDirection(1, 0) ||
-        checkDirection(1, 1) ||
-        checkDirection(-1, 1)
-      );
-    },
-    []
-  );
+    return (
+      checkDirection(0, 1) ||
+      checkDirection(1, 0) ||
+      checkDirection(1, 1) ||
+      checkDirection(-1, 1)
+    );
+  }, []);
 
   const makeMove = useCallback(
     (column: number) => {
