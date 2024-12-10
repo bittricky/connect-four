@@ -16,3 +16,11 @@ export interface ScoreCardProps {
   score: number;
   isCurrentPlayer: boolean;
 }
+
+export interface BoardProps {
+  board: CellType[][];
+  currentPlayer: Player;
+  onColumnClick: (column: number) => void;
+  hoverColumn: number | null;
+  setHoverColumn: (column: number | null) => void;
+}
