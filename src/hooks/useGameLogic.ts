@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { Player, Board, GameState } from "../types/game";
+import { Player, Board, GameState } from "../types/global";
 
 const createInitialBoard = () =>
   Array(6)
