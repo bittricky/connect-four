@@ -1,6 +1,8 @@
 import { FC } from "react";
 
-import { BoardProps, Cell as CellType, Player } from "../types/global";
+import Cell from "./Cell";
+
+import { BoardProps } from "../types/global";
 
 const Board: FC<BoardProps> = ({
   board,
@@ -16,7 +18,17 @@ const Board: FC<BoardProps> = ({
         style={{ aspectRatio: "7/6" }}
       >
         {board.map((row, rowIndex) =>
-          row.map((cell, colIndex) => <div>Cell</div>)
+          row.map((cell, colIndex) => (
+            <Cell
+              key={`${rowIndex}-${colIndex}`}
+              value={cell}
+              onClick={() => onColumnClick(colIndex)}
+              onMouseEnter={() => setHoverColumn(colIndex)}
+              onMouseLeave={() => setHoverColumn(null)}
+              isHovered={hoverColumn === colIndex}
+              currentPlayer={currentPlayer}
+            />
+          ))
         )}
       </div>
     </div>
