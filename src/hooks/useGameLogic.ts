@@ -1,13 +1,7 @@
-import { useState, useCallback, useEffect } from "react";
-
+import { useState, useCallback, useEffect, useRef } from "react";
 import { getBestMove } from "../utils/ai";
-import { Player, Board, GameState } from "../types/global";
+import { Player, Board, GameState, Mode, Difficulty } from "../types/global";
 
-/**
- * Creates an initial game board. The board is a 6x7 grid with each cell initially
- * set to null. This function is used to create the initial state of the game.
- * @returns {Board} The initial game board.
- */
 const createInitialBoard = () =>
   Array(6)
     .fill(null)
@@ -28,26 +22,16 @@ const INITIAL_STATE: GameState = {
   difficulty: "medium",
 };
 
-/**
- * Hook that handles the game state and logic for Connect Four.
- *
- * @returns An object with the following properties:
- * - state: The current game state.
- * - makeMove: A function that makes a move in the game. It takes the column number
- *   as an argument.
- * - resetGame: A function that resets the game state to the initial state.
- */
 export const useGameLogic = () => {
   const [state, setState] = useState<GameState>(INITIAL_STATE);
+  const stateRef = useRef(state); // Create a ref to store the current state
+
+  // Synchronize the ref with the current state
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
 
   const checkWin = useCallback((board: Board, player: Player) => {
-    /**
-     * Checks if there are four cells in a row in the given direction.
-     *
-     * @param {number} rowOffset The row offset.
-     * @param {number} colOffset The column offset.
-     * @returns {boolean} If there are four cells in a row in the given direction.
-     */
     const checkDirection = (rowOffset: number, colOffset: number) => {
       for (let startRow = 0; startRow < 6; startRow++) {
         for (let startCol = 0; startCol < 7; startCol++) {
@@ -56,7 +40,6 @@ export const useGameLogic = () => {
             const row = startRow + i * rowOffset;
             const col = startCol + i * colOffset;
             if (row < 0 || row >= 6 || col < 0 || col >= 7) {
-              // Out of bounds, skip this direction
               fourCells.length = 0;
               break;
             }
@@ -74,22 +57,22 @@ export const useGameLogic = () => {
     };
 
     return (
-      checkDirection(0, 1) ||
-      checkDirection(1, 0) ||
-      checkDirection(1, 1) ||
-      checkDirection(-1, 1)
+      checkDirection(0, 1) || // Horizontal
+      checkDirection(1, 0) || // Vertical
+      checkDirection(1, 1) || // Diagonal Down-Right
+      checkDirection(-1, 1) // Diagonal Up-Right
     );
   }, []);
 
   const makeMove = useCallback(
     (column: number) => {
-      if (state.isGameOver) return;
-
       setState((prev) => {
-        const newBoard = [...prev.board.map((row) => [...row])];
+        if (prev.isGameOver) return prev;
 
+        const newBoard = prev.board.map((row) => [...row]); // Deep clone the board
         let row = -1;
 
+        // Find the lowest empty row in the selected column
         for (let i = 5; i >= 0; i--) {
           if (newBoard[i][column] === null) {
             row = i;
@@ -97,75 +80,112 @@ export const useGameLogic = () => {
           }
         }
 
-        if (row < 0) return prev;
+        if (row < 0) return prev; // Column is full, invalid move
 
-        newBoard[row][column] = prev.currentPlayer;
-
+        newBoard[row][column] = prev.currentPlayer; // Place the current player's piece
         const hasWon = checkWin(newBoard, prev.currentPlayer);
+        
+        const nextPlayer = hasWon ? prev.currentPlayer : (prev.currentPlayer === 1 ? 2 : 1);
+        console.log("Making move:", {
+          column,
+          row,
+          currentPlayer: prev.currentPlayer,
+          nextPlayer,
+          hasWon
+        });
 
-        const newGameState: GameState = {
+        return {
           ...prev,
           board: newBoard,
           timeLeft: TURN_TIME,
+          currentPlayer: nextPlayer,
+          winner: hasWon ? prev.currentPlayer : null,
+          isGameOver: hasWon,
+          scores: hasWon
+            ? {
+                ...prev.scores,
+                [prev.currentPlayer]: prev.scores[prev.currentPlayer] + 1,
+              }
+            : prev.scores,
         };
-
-        if (hasWon) {
-          newGameState.winner = prev.currentPlayer;
-          newGameState.isGameOver = true;
-          newGameState.scores = {
-            ...prev.scores,
-            [prev.currentPlayer]: prev.scores[prev.currentPlayer] + 1,
-          };
-        } else {
-          newGameState.currentPlayer = prev.currentPlayer === 1 ? 2 : 1;
-        }
-
-        return newGameState;
       });
     },
-    [checkWin, state]
+    [checkWin]
   );
 
   // AI move effect
   useEffect(() => {
-    if (
-      state.mode === "cpu" &&
-      state.currentPlayer === 2 &&
-      !state.isGameOver
-    ) {
+    const { currentPlayer, mode, board, difficulty, isGameOver } = state;
+    console.log("AI Move useEffect triggered:", {
+      mode,
+      currentPlayer,
+      difficulty,
+      isGameOver,
+      boardState: board.some(row => row.some(cell => cell !== null))
+    });
+
+    if (!mode || isGameOver) {
+      console.log("AI Move skipped - no mode or game over");
+      return;
+    }
+    
+    if (mode === "cpu" && currentPlayer === 2) {
+      console.log("Starting AI move calculation...");
       const timer = setTimeout(() => {
-        const aiMove = getBestMove(state.board, state.difficulty);
-        makeMove(aiMove);
+        const aiMove = getBestMove(board, difficulty);
+        console.log("AI calculated move: ", aiMove);
+        if (aiMove !== undefined && !isGameOver) {
+          makeMove(aiMove);
+        }
       }, 1000);
 
       return () => clearTimeout(timer);
     }
-  }, [
-    state.currentPlayer,
-    state.mode,
-    state.isGameOver,
-    state.board,
-    state.difficulty,
-    makeMove,
-  ]);
+  }, [state.currentPlayer, state.mode, state.difficulty, state.isGameOver, state.board, makeMove]);
 
   const startGame = useCallback((mode: Mode, difficulty?: Difficulty) => {
-    setState({
-      ...INITIAL_STATE,
-      mode: mode,
-      difficulty: difficulty || "medium",
+    console.log("Starting game with:", { mode, difficulty });
+    setState((prevState) => {
+      // Create new state without spreading INITIAL_STATE
+      const newState: GameState = {
+        board: createInitialBoard(),
+        currentPlayer: 1,
+        winner: null,
+        isGameOver: false,
+        scores: { 1: 0, 2: 0 },
+        timeLeft: TURN_TIME,
+        mode: mode, // Explicitly set the mode
+        difficulty: difficulty || "medium"
+      };
+      console.log("New game state:", newState);
+      return newState;
     });
   }, []);
 
+  useEffect(() => {
+    console.log("State changed:", {
+      mode: state.mode,
+      currentPlayer: state.currentPlayer,
+      difficulty: state.difficulty
+    });
+  }, [state.mode, state.currentPlayer, state.difficulty]);
+
   const resetGame = useCallback(() => {
-    setState((prev) => ({
-      ...prev,
-      board: createInitialBoard(),
-      currentPlayer: 1,
-      winner: null,
-      isGameOver: false,
-      timeLeft: TURN_TIME,
-    }));
+    setState((prev) => {
+      const resetState = {
+        ...prev,
+        board: createInitialBoard(),
+        currentPlayer: 1,
+        winner: null,
+        isGameOver: false,
+        timeLeft: TURN_TIME,
+        // Maintain the existing mode and difficulty
+        mode: prev.mode,
+        difficulty: prev.difficulty
+      };
+      console.log("Reset game state:", resetState);
+      return resetState;
+    });
   }, []);
 
   useEffect(() => {

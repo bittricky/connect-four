@@ -1,13 +1,27 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { Menu as MenuIcon, RefreshCw } from "lucide-react";
+import { useLocation } from "react-router";
 
 import { useGameLogic } from "../hooks/useGameLogic";
 import { ScoreCard, Board, Timer, Menu } from "./";
+import { Mode, Difficulty } from "../types/global";
 
 const Game: FC = () => {
-  const { state, makeMove, resetGame } = useGameLogic();
+  const { state, makeMove, resetGame, startGame } = useGameLogic();
   const [hoverColumn, setHoverColumn] = useState<number | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const location = useLocation();
+
+  // Initialize game state when component mounts
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const mode = (searchParams.get("mode") as Mode) || "cpu";
+    const difficulty =
+      (searchParams.get("difficulty") as Difficulty) || "medium";
+
+    console.log("Initializing game with:", { mode, difficulty });
+    startGame(mode, difficulty);
+  }, [startGame, location]);
 
   return (
     <div className="min-h-screen bg-purple-500 p-4 md:p-8">

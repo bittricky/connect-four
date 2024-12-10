@@ -25,9 +25,10 @@ const Home: FC<HomeProps> = ({ onStartGame, onShowRules }) => {
 
   const handleStartGame = () => {
     if (selectedDifficulty || !showDifficulty) {
-      console.log(selectedDifficulty);
-      onStartGame("cpu", selectedDifficulty);
-      navigate("/Game");
+      console.log("Starting game with difficulty:", selectedDifficulty);
+      const difficulty = selectedDifficulty || "medium";
+      onStartGame("cpu", difficulty);
+      navigate(`/Game?mode=cpu&difficulty=${difficulty}`);
     } else {
       alert("Please select a difficulty level to start the game.");
     }
