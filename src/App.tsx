@@ -6,8 +6,8 @@ import { useGameLogic } from "./hooks/useGameLogic";
 import { ScoreCard, Board } from "./components";
 function App() {
   const { state, makeMove, resetGame } = useGameLogic();
-  const { hoverColumn, setHoverColumn } = useState<number | null>(null);
-  const { isMenuOpen, setIsMenuOpen } = useState<boolean>(false);
+  const [hoverColumn, setHoverColumn] = useState<number | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   return (
     <div className="min-h-screen bg-purple-500 p-4 md:p-8">
