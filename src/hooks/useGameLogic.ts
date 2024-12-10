@@ -83,22 +83,21 @@ export const useGameLogic = () => {
 
       setState((prev) => {
         const newBoard = [...prev.board.map((row) => [...row])];
-        let row = 5;
 
-        const firstEmptyRow = newBoard.reduceRight(
-          (acc, row, rowIdx) => (row[column] === null ? rowIdx : acc),
-          -1
-        );
+        let row = -1;
 
-        if (firstEmptyRow < 0) return prev;
-
-        row = firstEmptyRow;
+        for (let i = 5; i >= 0; i--) {
+          if (newBoard[i][column] === null) {
+            row = i;
+            break;
+          }
+        }
 
         if (row < 0) return prev;
 
         newBoard[row][column] = prev.currentPlayer;
 
-        const hasWon = checkWin(newBoard, row, column, prev.currentPlayer);
+        const hasWon = checkWin(newBoard, prev.currentPlayer);
 
         const newGameState: GameState = {
           ...prev,
