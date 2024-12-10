@@ -36,7 +36,7 @@ const NotFound: FC = () => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-white text-purple-600 px-6 py-3 rounded-xl shadow-lg flex items-center justify-center gap-2 font-semibold mx-auto"
+          className="bg-white text-yellow-500 px-6 py-3 rounded-xl shadow-lg flex items-center justify-center gap-2 font-semibold mx-auto border border-black"
           onClick={() => navigate("/")}
         >
           <Home className="w-5 h-5" />
