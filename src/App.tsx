@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Menu, RefreshCw } from "lucide-react";
 
 import { useGameLogic } from "./hooks/useGameLogic";
+
+import { ScoreCard } from "./components";
 function App() {
   const { state, makeMove, resetGame } = useGameLogic();
   const { hoverColumn, setHoverColumn } = useState<number | null>(null);
@@ -32,18 +34,26 @@ function App() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] gap-4 items-center">
-          {/* TODO: Score Card Component */}
+          <ScoreCard
+            player={1}
+            score={state.scores[1]}
+            isCurrentPlayer={state.currentPlayer === 1}
+          />
 
           {/* TODO: Board Component */}
 
-          {/* TODO: Score Card Component */}
+          <ScoreCard
+            player={2}
+            score={state.scores[2]}
+            isCurrentPlayer={state.currentPlayer === 2}
+          />
         </div>
 
         {state.winner ? (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
             <div className="bg-white p-8 rounded-lg text-center">
               <h2 className="text-2xl font-bold mb-4">
-                Player {state.winner} Wins!
+                Player {state.winner} Wins! Hooray! 🎉
               </h2>
               <button
                 onClick={resetGame}
