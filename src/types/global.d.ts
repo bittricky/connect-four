@@ -38,3 +38,9 @@ export interface TimerProps {
   timeLeft: number;
   currentPlayer: Player;
 }
+
+export interface MenuProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onResetGame: () => void;
+}
