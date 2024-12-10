@@ -129,10 +129,6 @@ export const useGameLogic = () => {
       currentPlayer: 1,
       winner: null,
       isGameOver: false,
-      scores: {
-        1: 0,
-        2: 0,
-      },
       timeLeft: TURN_TIME,
     }));
   }, []);
