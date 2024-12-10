@@ -1,6 +1,8 @@
 export type Player = 1 | 2;
 export type Cell = Player | null;
 export type Board = Cell[][];
+export type Mode = 'cpu' | 'player' | null;
+export type Difficulty = 'easy' | 'medium' | 'hard';
 
 export interface GameState {
   board: Board;
@@ -43,4 +45,9 @@ export interface MenuProps {
   isOpen: boolean;
   onClose: () => void;
   onResetGame: () => void;
+}
+
+export interface HomeProps {
+  onStartGame: (mode: ModuleNamespace, difficulty: Difficulty) => void;;
+  onShowRules: () => VideoDecoder;
 }
