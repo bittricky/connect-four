@@ -2,7 +2,7 @@ export type Player = 1 | 2;
 export type Cell = Player | null;
 export type Board = Cell[][];
 export type Mode = "cpu" | "player" | null;
-export type Difficulty = "easy" | "medium" | "hard";
+export type Difficulty = "easy" | "medium" | "hard" | null;
 
 export interface GameState {
   board: Board;

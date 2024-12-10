@@ -1,10 +1,14 @@
 import { FC } from "react";
 import { X } from "lucide-react";
+import { useNavigate } from "react-router";
+
 import { motion, AnimatePresence } from "framer-motion";
 
 import { MenuProps } from "../types/global";
 
 const Menu: FC<MenuProps> = ({ isOpen, onClose, onResetGame }) => {
+  const navigate = useNavigate();
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -55,6 +59,12 @@ const Menu: FC<MenuProps> = ({ isOpen, onClose, onResetGame }) => {
                 className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors mt-8"
               >
                 New Game
+              </button>
+              <button
+                onClick={() => navigate("/")}
+                className="w-full bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                Main Menu
               </button>
             </div>
           </motion.div>
